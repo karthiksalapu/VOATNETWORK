@@ -1881,6 +1881,20 @@ class AdminPanel extends Component {
 
               {viewingSubmission.status === "approved" && (
                 <>
+                {/*added reject button*/}
+                <button
+                    className="adminpanel-reject-btn"
+                    onClick={() =>
+                      this.handleStatusChange(
+                        viewingSubmission._id || viewingSubmission.id,
+                        "rejected"
+                      )
+                    }
+                  >
+                    <i className="fas fa-times"></i>
+                    Reject
+                  </button>
+                  
                   <button
                     className="adminpanel-delete-btn"
                     onClick={() =>
@@ -1914,7 +1928,21 @@ class AdminPanel extends Component {
               )}
 
               {viewingSubmission.status === "rejected" && (
-                <>
+                <>   
+                  {/*added  approve*/}
+                
+                  <button
+                    className="adminpanel-approve-btn"
+                    onClick={() =>
+                      this.handleStatusChange(
+                        viewingSubmission._id || viewingSubmission.id,
+                        "approved"
+                      )
+                    }
+                  >
+                    <i className="fas fa-check"></i>
+                    Approve
+                  </button>
                   <button
                     className="adminpanel-delete-btn"
                     onClick={() =>
