@@ -615,6 +615,12 @@ class PortfolioList extends Component {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
+  //change 
+  getDisplayName = (portfolio) => {
+  const nicknameMap = JSON.parse(localStorage.getItem("nicknameMap") || "{}");
+  return nicknameMap[portfolio.email] || portfolio.name;
+};
+
 
   loadUserImages = () => {
     try {
@@ -1662,10 +1668,16 @@ class PortfolioList extends Component {
 
                       {/* Card Content */}
                       <div className="card-content">
-                        <h3 className="freelancer-name">
+                       {/*} <h3 className="freelancer-name">
                           {this.formatName(portfolio.name)}
                         </h3>
-                        <p className="profession">{portfolio.profession}</p>
+                        <p className="profession">{portfolio.profession}</p>*/}
+                        <h2 className="freelancer-nickname-display">
+  {portfolio.nickname?.trim() || this.formatName(portfolio.name)}
+</h2>
+
+ 
+  <p className="profession">{portfolio.profession}</p>
 
                         {/* VOAT ID */}
                         <div className="voat-id">
