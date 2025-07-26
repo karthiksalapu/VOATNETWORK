@@ -5,6 +5,8 @@ import "./index.css";
 
 class AdminPanel extends Component {
   state = {
+    editingNickname: "",
+
     isAuthenticated: false,
     email: "",
     password: "",
@@ -29,6 +31,32 @@ class AdminPanel extends Component {
     quickBookingStatusFilter: "all",
     quickBookingSortBy: "newest",
   };
+  saveNickname = async (userId) => {
+  try {
+    const response = await fetch(`${this.state.baseUrl}/api/user/${userId}/nickname`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ nickname: this.state.editingNickname }),
+    });
+
+    const data = await response.json();
+    alert("Nickname saved!");
+
+    // Clear editing input
+    this.setState({ editingNickname: "" });
+
+    // Refresh submissions if needed
+    this.fetchPortfolioSubmissions(); // if this method exists
+  } catch (error) {
+    console.error("Error saving nickname:", error);
+    alert("Failed to save nickname.");
+  }
+};
+
+  
+
 
   componentDidMount() {
     this.checkAuthentication();
@@ -1706,6 +1734,14 @@ class AdminPanel extends Component {
                   {this.getInitials(viewingSubmission.name)}
                 </div>
               </div>
+              {/*changes*/ }
+              <div className="adminpanel-profile-nickname">
+  {viewingSubmission.nickname
+    ? ` ${viewingSubmission.nickname.trim()}`
+    : ""}
+</div>
+
+
 
               <div className="adminpanel-profile-details">
                 <h1>{viewingSubmission.name || "Unnamed"}</h1>
@@ -1802,6 +1838,37 @@ class AdminPanel extends Component {
                 <p>{viewingSubmission.about}</p>
               </div>
             )}
+            
+            {/*nickname */}
+            <div className="adminpanel-detail-card">
+
+              <div className="adminpanel-detail-label">
+                <i className="fas fa-user-tag"></i>
+                  Nickname
+              </div>
+            <div className="adminpanel-detail-value">
+              <input
+             
+  type="text"
+  placeholder="Enter nickname"
+  value={this.state.editingNickname || viewingSubmission.nickname || ""}
+  onChange={(e) =>
+    this.setState({ editingNickname: e.target.value })
+  }
+  className="adminpanel-nickname-input"
+/>
+<button   className="adminpanel-save-nickname-btn" onClick={() => this.saveNickname(viewingSubmission._id || viewingSubmission.id)}>
+  Save Nickname
+</button>
+<h1>{viewingSubmission.nickname?.trim() || " "}</h1>
+
+
+              </div>
+            </div>
+            
+
+            
+
 
             <div className="adminpanel-services-section">
               <h3>
